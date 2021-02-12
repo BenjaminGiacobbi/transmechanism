@@ -9,7 +9,7 @@ public class MoveNoneState : MoveState
     public override void Enter()
     {
         
-        MoveStates.Player.SetIdle();
+        // MoveStates.Player.SetIdle();
         MoveStates.Input.Move += StartMove;
         MoveStates.Input.Sprint += HandleSprint;
     }

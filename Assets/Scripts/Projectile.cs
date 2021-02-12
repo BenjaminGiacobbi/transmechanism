@@ -5,8 +5,10 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] LayerMask _impactLayers;
+    [SerializeField] int _damage = 5;
     [SerializeField] float _projectileSpeed = 0.5f;
     [SerializeField] float _lifetime = 3f;
+    [SerializeField] float _recoilSpeed = 5f;
     public float ProjectileSpeed
     { get { return _projectileSpeed; } private set { _projectileSpeed = value; } }
 
@@ -32,6 +34,19 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        IRecoil recoil = other.gameObject.GetComponent<IRecoil>();
+        IDamageable<int> damageable = other.gameObject.GetComponent<IDamageable<int>>();
+        if (recoil != null)
+        {
+            if (Physics.Raycast(transform.position, other.transform.position - transform.position, out RaycastHit hit, Mathf.Infinity))
+                recoil.ApplyRecoil(hit.point, _recoilSpeed);
+        }
+
+        if (damageable != null)
+        {
+            damageable.Damage(_damage);
+        }
+
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground") || other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             //TODO object pooling

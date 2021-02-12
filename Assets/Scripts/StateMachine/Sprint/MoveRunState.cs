@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MoveRunState : MoveState
 {
+    /*
     public override void Enter()
     {
         MoveStates.Player.CancelSprint();
@@ -34,4 +35,5 @@ public class MoveRunState : MoveState
         MoveStates.Input.Move -= OnMove;
         MoveStates.Input.Sprint -= OnSprint;
     }
+    */
 }

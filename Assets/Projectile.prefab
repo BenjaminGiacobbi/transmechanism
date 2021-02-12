@@ -111,8 +111,10 @@ MonoBehaviour:
   _impactLayers:
     serializedVersion: 2
     m_Bits: 768
+  _damage: 5
   _projectileSpeed: 10
   _lifetime: 3
+  _recoilSpeed: 20
 --- !u!54 &2911010765120206013
 Rigidbody:
   m_ObjectHideFlags: 0

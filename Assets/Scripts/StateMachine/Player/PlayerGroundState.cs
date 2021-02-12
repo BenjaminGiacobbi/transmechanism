@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerGroundState : PlayerState
 {
+    /*
     float frameCounter;
 
     public override void Enter()
@@ -37,4 +38,5 @@ public class PlayerGroundState : PlayerState
         Debug.Log("Exit Ground");
         PlayerStates.Input.Jump -= OnJump;
     }
+    */
 }

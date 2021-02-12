@@ -9,12 +9,14 @@ public class PlayerAirState : PlayerState
         Debug.Log("Enter Jump");
     }
 
+    /*
     public override void Tick()
     {
         PlayerStates.Player.ApplyAirGravity();
         if (PlayerStates.Player.Grounded())
             PlayerStates.ChangeState<PlayerLandState>();
     }
+    */
 
     public override void Exit()
     {

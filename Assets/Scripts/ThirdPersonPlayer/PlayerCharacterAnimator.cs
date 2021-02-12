@@ -41,20 +41,17 @@ public class PlayerCharacterAnimator : MonoBehaviour
     // animator field
     Animator _animator = null;
     PlayerController _movementScript = null;
-    // AbilityLoadout _abilityScript = null;
 
     Coroutine _damageRoutine = null;
 
 
     private Coroutine _footstepRoutine = null;
     private bool _stepRoutineRunning = false;
-    /*
     
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _movementScript = GetComponent<PlayerController>(); // some workflows might have the animator as a child object, so 
-        // _abilityScript = GetComponent<AbilityLoadout>();       // keep in mind that this might be filled as an inspector reference
     }
 
     #region subscriptions
@@ -66,7 +63,6 @@ public class PlayerCharacterAnimator : MonoBehaviour
         _movementScript.StartFall += OnStartFalling;
         _movementScript.Land += OnLand;
         _movementScript.StartSprint += OnSprint;
-        _movementScript.Ability += OnAbility;
         _movementScript.StartRecoil += OnRecoil;
         _movementScript.Death += OnDeath;
     }
@@ -79,7 +75,6 @@ public class PlayerCharacterAnimator : MonoBehaviour
         _movementScript.StartFall -= OnStartFalling;
         _movementScript.Land -= OnLand;
         _movementScript.StartSprint -= OnSprint;
-        _movementScript.Ability -= OnAbility;
         _movementScript.StartRecoil -= OnRecoil;
         _movementScript.Death -= OnDeath;
     }
@@ -94,73 +89,75 @@ public class PlayerCharacterAnimator : MonoBehaviour
 
     private void OnIdle()
     {
-        ClearFeedback();
+        Debug.Log("Idle");
+        // ClearFeedback();
         _animator.CrossFadeInFixedTime(IdleState, .2f);
     }
 
 
     private void OnStartRunning()
     {
+        Debug.Log("Run");
         _animator.CrossFadeInFixedTime(RunState, .2f);
 
-        ClearFeedback();
-        _footstepRoutine = StartCoroutine(StepRoutine(_footstepTime));
+        // ClearFeedback();
+        // /_footstepRoutine = StartCoroutine(StepRoutine(_footstepTime));
 
     }
 
 
     private void OnSprint()
     {
+        Debug.Log("Sprint");
         _animator.CrossFadeInFixedTime(SprintState, .2f);
 
-        ClearFeedback();
-        _footstepRoutine = StartCoroutine(StepRoutine(_sprintStepTime));
+        // /ClearFeedback();
+        // _footstepRoutine = StartCoroutine(StepRoutine(_sprintStepTime));
     }
 
 
     private void OnStartJump()
     {
-        ClearFeedback();
+        // ClearFeedback();
 
+        Debug.Log("Jump");
         _animator.Play(JumpState);
         
-        _jumpParticles.transform.localEulerAngles = new Vector3
+        /*_jumpParticles.transform.localEulerAngles = new Vector3
             (0, _jumpParticles.transform.localEulerAngles.y, _jumpParticles.transform.localEulerAngles.z);
         _jumpParticles.Play();
         _trailParticles.Play();
         // AudioHelper.PlayClip2D(_jumpSound, 0.45f);
+        */
     }
 
 
     private void OnLand()
     {
+        Debug.Log("Land");
         _animator.Play(LandState);
 
+        /*
         _jumpParticles.transform.localEulerAngles = new Vector3
             (180, _jumpParticles.transform.localEulerAngles.y, _jumpParticles.transform.localEulerAngles.z);
         _jumpParticles.Play();
         _trailParticles.Stop();
         // AudioHelper.PlayClip2D(_landSound, 0.35f);
+        */
     }
 
 
     private void OnStartFalling()
     {
+        Debug.Log("Fall");
         _animator.CrossFadeInFixedTime(FallState, .2f);
     }
 
-
-    private void OnAbility()
-    {
-        _animator.CrossFadeInFixedTime(AbilityState, .2f);
-        ClearFeedback();
-    }
-
-
     private void OnRecoil()
     {
+        Debug.Log("Recoil");
         _animator.Play(RecoilState);
-        ClearFeedback();
+        /*ClearFeedback();
         _trailParticles.Play();
 
         if (_damageRoutine == null)
@@ -172,12 +169,13 @@ public class PlayerCharacterAnimator : MonoBehaviour
             }
                 // AudioHelper.PlayClip2D(_damageSound, 0.75f);
         }
-            
+           */ 
     }
 
 
     private void OnDeath()
     {
+        Debug.Log("Death");
         _animator.CrossFadeInFixedTime(DeathState, .2f);
         if (_deathSound != null)
             // AudioHelper.PlayClip2D(_deathSound, 0.5f);
@@ -187,9 +185,11 @@ public class PlayerCharacterAnimator : MonoBehaviour
 
     private void ClearFeedback()
     {
+        /*
         if (_footstepRoutine != null)
             StopCoroutine(_footstepRoutine);
         _trailParticles.Stop();
+        */
     }
 
 
@@ -216,5 +216,4 @@ public class PlayerCharacterAnimator : MonoBehaviour
         _bodyRenderer.material = tempMaterial;
         _damageRoutine = null;
     }
-    */
 }

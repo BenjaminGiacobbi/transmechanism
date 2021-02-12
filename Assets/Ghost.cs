@@ -5,6 +5,8 @@ public class Ghost : MonoBehaviour, IKillable
 {
     [SerializeField] float _detectRange = 5f, _pathUpdateSec = 0.2f;
     [SerializeField] BasicTrigger _trigger = null;
+    [SerializeField] int _damage = 5;
+    [SerializeField] int _recoilSpeed = 10;
     NavMeshAgent _agent = null;
     Transform _target = null;
 
@@ -46,10 +48,9 @@ public class Ghost : MonoBehaviour, IKillable
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger Entered");
-        Debug.Log(other.gameObject);
         IPossessable possessable = other.gameObject.GetComponent<IPossessable>();
-        Debug.Log(possessable);
+        IRecoil recoil = other.gameObject.GetComponent<IRecoil>();
+        IDamageable<int> damageable = other.gameObject.GetComponent<IDamageable<int>>();
         if (possessable != null)
         {
             if (possessable.Possess())
@@ -58,10 +59,25 @@ public class Ghost : MonoBehaviour, IKillable
                 _agent.SetDestination(_startPos);
                 _target = null;
                 // TODO this is an easy bug where the ghost won't be able to find the player if they're in its radius upon return to home
-            }
-                
+            }  
             else
                 return;
+        }
+
+        if (recoil != null)
+        {
+            if (Physics.Raycast(transform.position, other.transform.position - transform.position, out RaycastHit hit, Mathf.Infinity))
+            {
+                recoil.ApplyRecoil(hit.point, _recoilSpeed);
+            }
+        }
+
+        if (damageable != null)
+        {
+            damageable.Damage(_damage);
+            transform.position = _startPos;
+            _agent.SetDestination(_startPos);
+            _target = null;
         }
     }
 
