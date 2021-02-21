@@ -11,21 +11,21 @@ NavMeshProjectSettings:
     cost: 1
   - name: Jump
     cost: 2
-  - name: 
+  - name: Turret Production
     cost: 1
-  - name: 
+  - name: Waste Disposal
     cost: 1
-  - name: 
+  - name: Android Development
     cost: 1
-  - name: 
+  - name: Hangar Bay
     cost: 1
-  - name: 
+  - name: Tank Production
     cost: 1
-  - name: 
+  - name: Energy Core
     cost: 1
-  - name: 
+  - name: HangarUpper
     cost: 1
-  - name: 
+  - name: Hall
     cost: 1
   - name: 
     cost: 1
@@ -74,9 +74,9 @@ NavMeshProjectSettings:
   - serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.5
-    agentHeight: 2
+    agentHeight: 2.5
     agentSlope: 45
-    agentClimb: 0.75
+    agentClimb: 2.5
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2

@@ -85,6 +85,16 @@ public class Ghost : MonoBehaviour, IKillable
     {
         _target = other.transform;
         _agent.SetDestination(_target.position);
+        /*
+        if (Mathf.Abs(transform.position.y - other.transform.position.y) <= 2)
+        {
+            Vector3 targetPos = new Vector3(other.transform.position.x, other.transform.position.y + 1, other.transform.position.z);
+            if(Physics.Raycast(transform.position, targetPos - transform.position, Mathf.Infinity, LayerMask.NameToLayer("Player")))
+            {
+               
+            }
+        }
+        */
     }
 
     // updates timer and restarts when it hits zero
