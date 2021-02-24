@@ -1,4 +1,5 @@
 ﻿public interface IPossessable
 {
-    bool Possess();
+    bool Possess(Ghost possessor);
+    bool Unpossess();
 }

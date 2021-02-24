@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class LevelActivator : MonoBehaviour
 {
-    [SerializeField] protected LevelObject _targetObject = null;
+    [SerializeField] protected LevelObject[] _targetObjects = null;
 
     public virtual void SendActivation()
     {
-        if (_targetObject != null)
-            _targetObject.Activate();
+        if (_targetObjects.Length > 0)
+        {
+            foreach(LevelObject lvlObj in _targetObjects)
+            {
+                lvlObj.Activate();
+            }
+        }
     }
 }

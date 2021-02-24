@@ -56,14 +56,6 @@ public class MovingPlatform : LevelObject
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            Activate();
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Deactivate();
-        }
         Osscilate();
     }
 

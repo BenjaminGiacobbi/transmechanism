@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-public class Ghost : MonoBehaviour, IKillable
+public class Ghost : MonoBehaviour
 {
     [SerializeField] float _detectRange = 5f, _pathUpdateSec = 0.2f;
     [SerializeField] BasicTrigger _trigger = null;
@@ -37,14 +37,6 @@ public class Ghost : MonoBehaviour, IKillable
         _startPos = transform.position;
     }
 
-    public void Kill()
-    {
-        transform.position = _startPos;
-        _agent.SetDestination(_startPos);
-        _agent.enabled = false;
-        gameObject.SetActive(false);
-    }
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -53,11 +45,10 @@ public class Ghost : MonoBehaviour, IKillable
         IDamageable<int> damageable = other.gameObject.GetComponent<IDamageable<int>>();
         if (possessable != null)
         {
-            if (possessable.Possess())
+            if (possessable.Possess(this))
             {
-                transform.position = _startPos;
-                _agent.SetDestination(_startPos);
-                _target = null;
+                ResetGhost(true);
+                ActiveGhost(false);
                 // TODO this is an easy bug where the ghost won't be able to find the player if they're in its radius upon return to home
             }  
             else
@@ -76,8 +67,7 @@ public class Ghost : MonoBehaviour, IKillable
         {
             damageable.Damage(_damage);
             transform.position = _startPos;
-            _agent.SetDestination(_startPos);
-            _target = null;
+            ResetGhost(true);
         }
     }
 
@@ -124,8 +114,7 @@ public class Ghost : MonoBehaviour, IKillable
                         new Vector2(transform.position.x, transform.position.z), new Vector2(_target.position.x, _target.position.z));
                     if (distance > _detectRange)
                     {
-                        _agent.SetDestination(_startPos);
-                        _target = null;
+                        ResetGhost(true);
                     }
                     else
                     {
@@ -134,5 +123,19 @@ public class Ghost : MonoBehaviour, IKillable
                 }
             }
         }
+    }
+
+    public void ResetGhost(bool instant = false)
+    {
+        if(instant)
+            transform.position = _startPos;
+        _agent.SetDestination(_startPos);
+        _target = null;
+    }
+
+    public void ActiveGhost(bool state)
+    {
+        _agent.enabled = state;
+        gameObject.SetActive(state);
     }
 }

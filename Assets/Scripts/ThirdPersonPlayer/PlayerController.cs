@@ -195,13 +195,13 @@ public class PlayerController : MonoBehaviour, IRecoil
         yield break;
     }
 
-    public void ApplyRecoil(Vector3 recoilOrigin, float recoilSpeed)
+    public void ApplyRecoil(Vector3 recoilDirection, float recoilSpeed)
     {
         _bs = BaseState.Recoil;
-        transform.LookAt(new Vector3(recoilOrigin.x, transform.position.y, recoilOrigin.z));
+        transform.LookAt(recoilDirection);
 
         // clamps recoil direction to get a minimum XZ recoil, prevents player from getting stuck atop an enemy
-        _recoilDirection = new Vector3(transform.position.x, transform.position.y + (_controller.height / 2), transform.position.z) - recoilOrigin;
+        _recoilDirection = recoilDirection;
         float clampX = Mathf.Clamp(Mathf.Abs(_recoilDirection.x), 0.25f, 1f);
         float clampZ = Mathf.Clamp(Mathf.Abs(_recoilDirection.z), 0.25f, 1f);
         _recoilDirection = new Vector3(clampX * (_recoilDirection.x > 0 ? 1f : -1f), _recoilDirection.y, clampZ * (_recoilDirection.z > 0 ? 1f : -1f));

@@ -16,7 +16,7 @@ public class Turret : MonoBehaviour, IPossessable
     private float _timer = 0;
     private bool _firedOnLast = false;
 
-    public bool Possess()
+    public bool Possess(Ghost possessor)
     {
         if (!Possessed)
         {
@@ -24,6 +24,11 @@ public class Turret : MonoBehaviour, IPossessable
             return Possessed;
         }
         return false;
+    }
+
+    public bool Unpossess()
+    {
+        throw new System.NotImplementedException();
     }
 
     // Start is called before the first frame update

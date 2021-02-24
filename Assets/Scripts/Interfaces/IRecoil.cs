@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IRecoil
 {
-    void ApplyRecoil(Vector3 recoilOrigin, float recoilSpeed);
+    void ApplyRecoil(Vector3 recoilDirection, float recoilSpeed);
 }
