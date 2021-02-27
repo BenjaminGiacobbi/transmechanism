@@ -7,8 +7,12 @@ public class PlayerHealth : MonoBehaviour, IDamageable<int>, IKillable
 {
     public event Action Died = delegate { };
     public event Action<int> TookDamage = delegate { };
+    public event Action<int> HealthSet = delegate { };
+    public event Action<int> HealthRestored = delegate { };
 
     [SerializeField] int _maxHp = 50;
+    public int MaxHealth { get { return _maxHp; } private set { _maxHp = value; } }
+
     private int _hp;
     public int HP
     {
@@ -27,10 +31,15 @@ public class PlayerHealth : MonoBehaviour, IDamageable<int>, IKillable
         }
     }
 
+    
+
     public void Damage(int damageTaken)
     {
+        Debug.Log("Damage");
         HP -= damageTaken;
-        TookDamage?.Invoke(HP);
+        Debug.Log("HP: " + HP);
+        TookDamage?.Invoke(damageTaken);
+        HealthSet?.Invoke(HP);
         if (HP <= 0)
             Kill();
     }

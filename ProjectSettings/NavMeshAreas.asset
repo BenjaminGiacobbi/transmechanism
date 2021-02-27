@@ -27,7 +27,7 @@ NavMeshProjectSettings:
     cost: 1
   - name: Hall
     cost: 1
-  - name: 
+  - name: CoreUpper
     cost: 1
   - name: 
     cost: 1

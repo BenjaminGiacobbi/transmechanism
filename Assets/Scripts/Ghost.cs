@@ -57,6 +57,8 @@ public class Ghost : MonoBehaviour
 
         if (recoil != null)
         {
+            Vector3 origin = new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y + 1, other.gameObject.transform.position.z);
+            Vector3 direction = origin - transform.position;
             if (Physics.Raycast(transform.position, other.transform.position - transform.position, out RaycastHit hit, Mathf.Infinity))
             {
                 recoil.ApplyRecoil(hit.point, _recoilSpeed);
@@ -73,18 +75,16 @@ public class Ghost : MonoBehaviour
 
     private void OnActive(Collider other)
     {
-        _target = other.transform;
-        _agent.SetDestination(_target.position);
-        /*
-        if (Mathf.Abs(transform.position.y - other.transform.position.y) <= 2)
+
+        if (Mathf.Abs(other.transform.position.y - transform.position.y) <= 2)
         {
             Vector3 targetPos = new Vector3(other.transform.position.x, other.transform.position.y + 1, other.transform.position.z);
-            if(Physics.Raycast(transform.position, targetPos - transform.position, Mathf.Infinity, LayerMask.NameToLayer("Player")))
+            if(Physics.Raycast(transform.position, targetPos - transform.position, Mathf.Infinity))
             {
-               
+               _target = other.transform;
+                _agent.SetDestination(_target.position);
             }
         }
-        */
     }
 
     // updates timer and restarts when it hits zero
@@ -112,7 +112,7 @@ public class Ghost : MonoBehaviour
                     // detects whether object is in range and adjusts pathing accordingly
                     float distance = Vector2.Distance(
                         new Vector2(transform.position.x, transform.position.z), new Vector2(_target.position.x, _target.position.z));
-                    if (distance > _detectRange)
+                    if (distance > _detectRange || Mathf.Abs(_target.transform.position.y - transform.position.y) > 2)
                     {
                         ResetGhost(true);
                     }

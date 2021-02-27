@@ -6,26 +6,30 @@ using System;
 public class GeneratorSwitch : MonoBehaviour, IPossessable
 {
     public event Action Possessed = delegate { };
+    private Ghost _possessor = null;
 
     public bool Possess(Ghost possessor)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Possess attempt");
+        if(_possessor == null)
+        {
+            _possessor = possessor;
+            Possessed?.Invoke();
+            return true;
+        }
+        return false;
     }
 
     public bool Unpossess()
     {
-        throw new System.NotImplementedException();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log(gameObject.name);
+        if(_possessor)
+        {
+            _possessor.ActiveGhost(true);
+            _possessor.ResetGhost(true);
+            _possessor = null;
+            return true;
+        }
+        return false;
     }
 }

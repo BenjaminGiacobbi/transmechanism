@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Damage : MonoBehaviour
 {
+    [SerializeField] LayerMask _damageLayers;
     [SerializeField] ParticleSystem _impactParticles = null;
     [SerializeField] AudioClip _impactSound = null;
     [SerializeField] int _damageAmount = 10;
@@ -34,9 +35,12 @@ public class Damage : MonoBehaviour
         if (recoil != null)
         {
             Vector3 origin = new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y + 1, other.gameObject.transform.position.z);
-            Vector3 direction = origin - transform.position;
+            Vector3 direction = transform.position - origin;
+            Debug.DrawRay(origin, direction, Color.red, 5f);
             if (Physics.Raycast(origin, direction, out RaycastHit hit, Mathf.Infinity))
             {
+                Debug.DrawRay(hit.point, hit.normal, Color.blue, 5f);
+                Debug.Log(hit.collider.transform);
                 recoil.ApplyRecoil(hit.normal, _recoilSpeed);
             }
         }

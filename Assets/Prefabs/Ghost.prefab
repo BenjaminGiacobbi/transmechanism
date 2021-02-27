@@ -352,7 +352,7 @@ GameObject:
   - component: {fileID: 7840001965375740700}
   - component: {fileID: 7840001965375740703}
   - component: {fileID: 7840001965375740701}
-  m_Layer: 11
+  m_Layer: 2
   m_Name: ActivationCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

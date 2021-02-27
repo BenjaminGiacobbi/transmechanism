@@ -18,6 +18,9 @@ public class ShockHazard : LevelObject
             MeshRenderer renderer = obj.GetComponent<MeshRenderer>();
             if (renderer != null)
                 renderer.material = _activeMaterial;
+            Collider collider = obj.GetComponent<Collider>();
+            if (collider != null)
+                collider.isTrigger = true;
         }
     }
 
@@ -31,6 +34,9 @@ public class ShockHazard : LevelObject
             MeshRenderer renderer = obj.GetComponent<MeshRenderer>();
             if (renderer != null)
                 renderer.material = _inactiveMaterial;
+            Collider collider = obj.GetComponent<Collider>();
+            if (collider != null)
+                collider.isTrigger = false;
         }
     }
 

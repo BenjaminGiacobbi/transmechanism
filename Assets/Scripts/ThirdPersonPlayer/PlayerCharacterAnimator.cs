@@ -89,7 +89,7 @@ public class PlayerCharacterAnimator : MonoBehaviour
 
     private void OnIdle()
     {
-        Debug.Log("Idle");
+        //Debug.Log("Idle");
         // ClearFeedback();
         _animator.CrossFadeInFixedTime(IdleState, .2f);
     }
@@ -97,7 +97,7 @@ public class PlayerCharacterAnimator : MonoBehaviour
 
     private void OnStartRunning()
     {
-        Debug.Log("Run");
+        //Debug.Log("Run");
         _animator.CrossFadeInFixedTime(RunState, .2f);
 
         // ClearFeedback();
@@ -108,7 +108,7 @@ public class PlayerCharacterAnimator : MonoBehaviour
 
     private void OnSprint()
     {
-        Debug.Log("Sprint");
+        //Debug.Log("Sprint");
         _animator.CrossFadeInFixedTime(SprintState, .2f);
 
         // /ClearFeedback();
@@ -120,7 +120,7 @@ public class PlayerCharacterAnimator : MonoBehaviour
     {
         // ClearFeedback();
 
-        Debug.Log("Jump");
+        //Debug.Log("Jump");
         _animator.Play(JumpState);
         
         /*_jumpParticles.transform.localEulerAngles = new Vector3
@@ -134,7 +134,7 @@ public class PlayerCharacterAnimator : MonoBehaviour
 
     private void OnLand()
     {
-        Debug.Log("Land");
+        //Debug.Log("Land");
         _animator.Play(LandState);
 
         /*
@@ -149,13 +149,13 @@ public class PlayerCharacterAnimator : MonoBehaviour
 
     private void OnStartFalling()
     {
-        Debug.Log("Fall");
+        //Debug.Log("Fall");
         _animator.CrossFadeInFixedTime(FallState, .2f);
     }
 
     private void OnRecoil()
     {
-        Debug.Log("Recoil");
+        //Debug.Log("Recoil");
         _animator.Play(RecoilState);
         /*ClearFeedback();
         _trailParticles.Play();
@@ -175,7 +175,7 @@ public class PlayerCharacterAnimator : MonoBehaviour
 
     private void OnDeath()
     {
-        Debug.Log("Death");
+        //Debug.Log("Death");
         _animator.CrossFadeInFixedTime(DeathState, .2f);
         if (_deathSound != null)
             // AudioHelper.PlayClip2D(_deathSound, 0.5f);

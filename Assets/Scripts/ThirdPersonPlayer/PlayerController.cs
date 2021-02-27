@@ -202,8 +202,8 @@ public class PlayerController : MonoBehaviour, IRecoil
 
         // clamps recoil direction to get a minimum XZ recoil, prevents player from getting stuck atop an enemy
         _recoilDirection = recoilDirection;
-        float clampX = Mathf.Clamp(Mathf.Abs(_recoilDirection.x), 0.25f, 1f);
-        float clampZ = Mathf.Clamp(Mathf.Abs(_recoilDirection.z), 0.25f, 1f);
+        float clampX = Mathf.Clamp(Mathf.Abs(_recoilDirection.x), 0.15f, 1f);
+        float clampZ = Mathf.Clamp(Mathf.Abs(_recoilDirection.z), 0.15f, 1f);
         _recoilDirection = new Vector3(clampX * (_recoilDirection.x > 0 ? 1f : -1f), _recoilDirection.y, clampZ * (_recoilDirection.z > 0 ? 1f : -1f));
 
         _verticalVelocity = 0;
@@ -339,12 +339,12 @@ public class PlayerController : MonoBehaviour, IRecoil
             {
                 if (_as == AirState.Fall)
                 {
-                    Debug.Log("Invoke Fall");
+                    //Debug.Log("Invoke Fall");
                     StartFall?.Invoke();
                 }
                 else if (_as == AirState.Jump)
                 {
-                    Debug.Log("Invoke Jump");
+                    //Debug.Log("Invoke Jump");
                     StartJump?.Invoke();
                 }
             }
@@ -353,34 +353,34 @@ public class PlayerController : MonoBehaviour, IRecoil
             {
                 if (_bs == BaseState.Sprint)
                 {
-                    Debug.Log("Invoke Sprint");
+                    //Debug.Log("Invoke Sprint");
                     StartSprint?.Invoke();
                 }
                 else if (_bs == BaseState.Run)
                 {
-                    Debug.Log("Invoke Run");
+                    //Debug.Log("Invoke Run");
                     StartRunning?.Invoke();
                 }
                 else if (_bs == BaseState.Recoil)
                 {
-                    Debug.Log("Invoke Recoil");
+                    //Debug.Log("Invoke Recoil");
                     StartRecoil?.Invoke();
                 }
                 else if (_bs == BaseState.Dead)
                 {
-                    Debug.Log("Invoke Death");
+                    //Debug.Log("Invoke Death");
                     Death?.Invoke();
                 }
                 else
                 {
-                    Debug.Log("Invoke Idle");
+                    //Debug.Log("Invoke Idle");
                     Idle?.Invoke();
                 }
             }
         }
         else if (_lastBase != (int)_bs)
         {
-            Debug.Log("Invoke Land");
+            //Debug.Log("Invoke Land");
             Land?.Invoke();
         }
 
