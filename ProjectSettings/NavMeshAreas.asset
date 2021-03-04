@@ -29,7 +29,7 @@ NavMeshProjectSettings:
     cost: 1
   - name: CoreUpper
     cost: 1
-  - name: 
+  - name: Storage
     cost: 1
   - name: 
     cost: 1
