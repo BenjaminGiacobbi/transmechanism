@@ -1,9 +1,15 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.AI;
 
 public class Ghost : MonoBehaviour
 {
-    [SerializeField] float _detectRange = 5f, _pathUpdateSec = 0.2f;
+    [SerializeField] float _detectRange = 10f;
+    public float DetectRange
+    { get { return _detectRange; } set { _detectRange = value; } }
+
+    [SerializeField] float _pathUpdateSec = 0.2f;
     [SerializeField] BasicTrigger _trigger = null;
     [SerializeField] int _damage = 5;
     [SerializeField] int _recoilSpeed = 10;
@@ -11,8 +17,12 @@ public class Ghost : MonoBehaviour
     Transform _target = null;
 
     float _timer = 0;
-    bool playerInRange = false;
     Vector3 _startPos = Vector3.zero;
+
+    [SerializeField] int _positions = 4;
+    Vector3[] _pos = null;
+
+    Coroutine _idle = null;
 
     // caching for components
     private void Awake()
@@ -22,18 +32,27 @@ public class Ghost : MonoBehaviour
 
     private void OnEnable()
     {
-        _trigger.Activated += OnActive;
+        if(_trigger != null)
+            _trigger.Activated += OnActive;
     }
 
     private void OnDisable()
     {
-        _trigger.Activated -= OnActive;
+        if (_trigger != null)
+            _trigger.Activated -= OnActive;
     }
 
 
     // begins enemy pathing
     private void Start()
     {
+        /*
+        _pos = new Vector3[_positions];
+        foreach(Vector3 pos in _pos)
+        {
+            NavMeshUtil.GetRandomPoint(transform.position, 2);
+        }
+        */
         _startPos = transform.position;
     }
 
@@ -59,9 +78,9 @@ public class Ghost : MonoBehaviour
         {
             Vector3 origin = new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y + 1, other.gameObject.transform.position.z);
             Vector3 direction = origin - transform.position;
-            if (Physics.Raycast(transform.position, other.transform.position - transform.position, out RaycastHit hit, Mathf.Infinity))
+            if (Physics.Raycast(transform.position, direction, out RaycastHit hit, Mathf.Infinity))
             {
-                recoil.ApplyRecoil(hit.point, _recoilSpeed);
+                // recoil.ApplyRecoil(hit.point, _recoilSpeed);
             }
         }
 
@@ -76,13 +95,15 @@ public class Ghost : MonoBehaviour
     private void OnActive(Collider other)
     {
 
-        if (Mathf.Abs(other.transform.position.y - transform.position.y) <= 2)
+        if (Mathf.Abs(other.transform.position.y - transform.position.y) <= 3)
         {
             Vector3 targetPos = new Vector3(other.transform.position.x, other.transform.position.y + 1, other.transform.position.z);
             if(Physics.Raycast(transform.position, targetPos - transform.position, Mathf.Infinity))
             {
                _target = other.transform;
-                _agent.SetDestination(_target.position);
+               _agent.SetDestination(_target.position);
+               //EndCoroutine();
+                    
             }
         }
     }
@@ -93,8 +114,16 @@ public class Ghost : MonoBehaviour
         UpdateTarget();
     }
 
+    public void SetTarget(Transform target)
+    {
+        _target = target;
+        _agent.SetDestination(_target.position);
+        //EndCoroutine();
+    }
+
     void UpdateTarget()
     {
+
         if (_timer == 0)
         {
             _timer = _pathUpdateSec;
@@ -112,14 +141,21 @@ public class Ghost : MonoBehaviour
                     // detects whether object is in range and adjusts pathing accordingly
                     float distance = Vector2.Distance(
                         new Vector2(transform.position.x, transform.position.z), new Vector2(_target.position.x, _target.position.z));
-                    if (distance > _detectRange || Mathf.Abs(_target.transform.position.y - transform.position.y) > 2)
+                    if (distance > DetectRange )//|| Mathf.Abs(_target.transform.position.y - transform.position.y) > 3)
                     {
-                        ResetGhost(true);
+                        ResetGhost(false);
                     }
                     else
                     {
                         _agent.SetDestination(_target.position);
                     }
+                }
+                else
+                {
+                    /*
+                    if(_idle == null)
+                        _idle = StartCoroutine(IdleRoutine());
+                        */
                 }
             }
         }
@@ -138,4 +174,32 @@ public class Ghost : MonoBehaviour
         _agent.enabled = state;
         gameObject.SetActive(state);
     }
+
+    private void EndCoroutine()
+    {
+        if (_idle != null)
+        {
+            StopCoroutine(_idle);
+            _idle = null;
+        }
+    }
+
+    /*
+    IEnumerator IdleRoutine()
+    {
+        while(true)
+        {
+            int idx = Random.Range(0, _pos.Length - 1);
+            _agent.SetDestination(_pos[idx]);
+            while (Vector2.Distance(new Vector2(_agent.destination.x, _agent.destination.z), new Vector2(transform.position.x, transform.position.z)) >= 0.25f)
+            {
+                if (Vector2.Distance(new Vector2(_agent.destination.x, _agent.destination.z), new Vector2(transform.position.x, transform.position.z)) < 0.25f)
+                    break;
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(2f);
+        }
+    }
+    */
 }

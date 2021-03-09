@@ -8,6 +8,7 @@ public class BasicTrigger : MonoBehaviour
 {
     public event Action<Collider> Activated = delegate { };
     [SerializeField] protected LayerMask _activationLayers;
+    [SerializeField] bool _singleUse = true;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -20,6 +21,8 @@ public class BasicTrigger : MonoBehaviour
         {
             Debug.Log("activated");
             Activated?.Invoke(other);
+            if (_singleUse)
+                enabled = false;
         }
     }
 }
