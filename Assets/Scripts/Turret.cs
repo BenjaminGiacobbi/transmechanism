@@ -9,6 +9,7 @@ public class Turret : MonoBehaviour, IPossessable
     [SerializeField] GameObject _projectile = null;
     [SerializeField] Transform _firePosition = null;
     [SerializeField] bool _possessed = false;
+    [SerializeField] ObjectPooler _pooler = null;
     public bool Possessed
     { get { return _possessed; } private set { _possessed = value; } }
 
@@ -16,6 +17,7 @@ public class Turret : MonoBehaviour, IPossessable
     private float _timer = 0;
     private bool _firedOnLast = false;
 
+    //
     public bool Possess(Ghost possessor)
     {
         if (!Possessed)
@@ -26,16 +28,13 @@ public class Turret : MonoBehaviour, IPossessable
         return false;
     }
 
+
+    // no unpossess behaviour currently because it's only used once with a straight use case
     public bool Unpossess()
     {
         throw new System.NotImplementedException();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -54,7 +53,8 @@ public class Turret : MonoBehaviour, IPossessable
     {
         if (Mathf.Round(_timer * 10) / 10 % 1 == 0 && !_firedOnLast)
         {
-            Instantiate(_projectile, _firePosition.position, transform.rotation);
+            GameObject newProjectile = _pooler.SpawnObject("Projectile", null, _firePosition.position, _firePosition.rotation);
+            newProjectile.GetComponent<Projectile>().Init(_pooler);
             _firedOnLast = true;
             _timer += 0.1f;
         }

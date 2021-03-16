@@ -12,24 +12,19 @@ public class Projectile : MonoBehaviour
     public float ProjectileSpeed
     { get { return _projectileSpeed; } private set { _projectileSpeed = value; } }
 
-    Rigidbody rb = null;
+    Rigidbody _rb = null;
+    ObjectPooler _pooler = null;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void Init(ObjectPooler pooler)
     {
-        OnStart();
-        rb.velocity = transform.forward * ProjectileSpeed;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        _pooler = pooler;
+        Invoke("ReturnPool", _lifetime);
+        _rb.velocity = transform.forward * ProjectileSpeed;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -50,18 +45,13 @@ public class Projectile : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground") || other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             //TODO object pooling
-            Destroy(gameObject, 0.02f);
+            ReturnPool();
         }
     }
 
-    protected virtual void OnStart()
+    void ReturnPool()
     {
-        Destroy(gameObject, _lifetime);
-        // particle effect on spawn
-    }
-
-    protected virtual void OnUpdate()
-    {
-        
+        if(gameObject.activeSelf)
+            _pooler.ReturnToPool("Projectile", gameObject);
     }
 }

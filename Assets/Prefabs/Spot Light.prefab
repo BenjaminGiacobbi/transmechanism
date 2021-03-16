@@ -142,6 +142,7 @@ MonoBehaviour:
   _activationLayers:
     serializedVersion: 2
     m_Bits: 2048
+  _singleUse: 0
 --- !u!1 &3678285821478356523
 GameObject:
   m_ObjectHideFlags: 0

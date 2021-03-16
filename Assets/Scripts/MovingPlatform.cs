@@ -90,7 +90,6 @@ public class MovingPlatform : LevelObject
         {
             while (_timer < _cycleTime)
             {
-                Debug.Log(_timer);
                 _timer += Time.deltaTime;
                 if (_timer >= _cycleTime)
                     _timer = _cycleTime;
@@ -101,7 +100,6 @@ public class MovingPlatform : LevelObject
 
             while (_timer > 0)
             {
-                Debug.Log(_timer);
                 _timer -= Time.deltaTime;
                 if (_timer <= 0)
                     _timer = 0;

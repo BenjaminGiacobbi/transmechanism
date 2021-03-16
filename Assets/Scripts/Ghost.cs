@@ -22,7 +22,7 @@ public class Ghost : MonoBehaviour
     [SerializeField] int _positions = 4;
     Vector3[] _pos = null;
 
-    Coroutine _idle = null;
+    Coroutine _behaviour = null;
 
     // caching for components
     private void Awake()
@@ -161,10 +161,19 @@ public class Ghost : MonoBehaviour
         }
     }
 
-    public void ResetGhost(bool instant = false)
+    public void ResetGhost(bool kill = false)
     {
-        if(instant)
-            transform.position = _startPos;
+        if(kill)
+        {
+            
+            
+            if(_behaviour != null)
+            {
+                StopCoroutine(_behaviour);
+                _behaviour = null;
+            }
+            _behaviour = StartCoroutine(DieRoutine());
+        }
         _agent.SetDestination(_startPos);
         _target = null;
     }
@@ -177,11 +186,20 @@ public class Ghost : MonoBehaviour
 
     private void EndCoroutine()
     {
-        if (_idle != null)
+        if (_behaviour != null)
         {
-            StopCoroutine(_idle);
-            _idle = null;
+            StopCoroutine(_behaviour);
+            _behaviour = null;
         }
+    }
+
+    IEnumerator DieRoutine()
+    {
+        _agent.enabled = false;
+        transform.position = new Vector3(2000, 2000, 2000);
+        yield return new WaitForSeconds(2.5f);
+        _agent.enabled = true;
+        transform.position = _startPos;
     }
 
     /*

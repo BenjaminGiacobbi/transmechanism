@@ -7,6 +7,14 @@ public class Switch : LevelActivator, IPossessable
     private bool _possessed = false;
     private Ghost _possessor = null;
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Possess(null);
+        }
+    }
+
     public bool Possess(Ghost possessor)
     {
         if(!_possessed)
