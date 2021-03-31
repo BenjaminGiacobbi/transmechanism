@@ -40,13 +40,14 @@ public class BigGhostController : LevelObject
     // Start is called before the first frame update
     void Start()
     {
+        _bigGhost.GetComponent<NavMeshAgent>().enabled = false;
         BGFlag = 0;
         CheckGhostState();
     }
 
     void CheckGhostState()
     {
-        switch(BGFlag)
+        switch (BGFlag)
         {
             case 1:
                 _bigGhost.transform.position = _point1.position;
@@ -61,6 +62,7 @@ public class BigGhostController : LevelObject
             case 3:
                 _bigGhost.transform.position = _point3.position;
                 _bigGhost.transform.rotation = _point3.rotation;
+                _bigGhost.GetComponent<NavMeshAgent>().enabled = true;
                 _bigGhost.DetectRange = 999f;
                 _bigGhost.SetTarget(_player.transform);
                 break;

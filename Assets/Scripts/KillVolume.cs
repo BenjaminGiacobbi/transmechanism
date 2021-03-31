@@ -13,10 +13,10 @@ public class KillVolume : BasicTrigger
     {
         if (_activationLayers == (_activationLayers | (1 << other.gameObject.layer)))
         {
-            Ghost ghost = other.gameObject.GetComponent<Ghost>();
-            if(ghost != null)
+            IKillable kill = other.gameObject.GetComponent<IKillable>();
+            if(kill != null)
             {
-                ghost.ResetGhost(true);
+                kill.Kill();
             }
         }
     }

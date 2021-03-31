@@ -12,6 +12,7 @@ public class BasicTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!enabled) return;
         ActivateTrigger(other);
     }
 
@@ -22,7 +23,10 @@ public class BasicTrigger : MonoBehaviour
             Debug.Log("activated");
             Activated?.Invoke(other);
             if (_singleUse)
+            {
+                Debug.Log("Disabling");
                 enabled = false;
+            }
         }
     }
 }

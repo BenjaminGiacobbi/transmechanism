@@ -26,7 +26,7 @@ public class GeneratorSwitch : MonoBehaviour, IPossessable
         if(_possessor)
         {
             _possessor.ActiveGhost(true);
-            _possessor.ResetGhost(true);
+            _possessor.Kill();
             _possessor = null;
             return true;
         }

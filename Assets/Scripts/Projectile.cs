@@ -33,8 +33,10 @@ public class Projectile : MonoBehaviour
         IDamageable<int> damageable = other.gameObject.GetComponent<IDamageable<int>>();
         if (recoil != null)
         {
-            if (Physics.Raycast(transform.position, other.transform.position - transform.position, out RaycastHit hit, Mathf.Infinity))
-                recoil.ApplyRecoil(hit.point, _recoilSpeed);
+            Vector3 origin = new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y + 1, other.gameObject.transform.position.z);
+            Vector3 direction = origin - transform.position;
+            if (Physics.Raycast(transform.position, direction, out RaycastHit hit, Mathf.Infinity))
+                recoil.ApplyRecoil(hit.normal, _recoilSpeed);
         }
 
         if (damageable != null)

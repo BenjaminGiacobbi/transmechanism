@@ -64,6 +64,8 @@ public class PlayerController : MonoBehaviour, IRecoil
     // start is called the frame after awake
     private void Start()
     {
+        // this definitely shouldn't go here
+        Application.targetFrameRate = 30;
         _bs = BaseState.Stand;
         _defaultSpeed = _speed;
     }
@@ -246,6 +248,29 @@ public class PlayerController : MonoBehaviour, IRecoil
     {
         if (Physics.SphereCast(transform.position + _controller.center, _controller.height / 6, -transform.up, out RaycastHit hit, 0.9f))
         {
+            int count = 0;
+            int index = 0;
+            Collider[] colliders = Physics.OverlapSphere
+                (new Vector3(transform.position.x, transform.position.y - 0.3f, transform.position.z), _controller.height / 6);
+            for(int i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i].GetComponent<MovingPlatform>() == true)
+                {
+                    count++;
+                    index = i;
+                } 
+            }
+
+            switch(count)
+            {
+                case 1:
+                    transform.parent = colliders[index].transform;
+                    break;
+                default:
+                    transform.parent = null;
+                    break;
+            }
+
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
                 // very simple ground clamping

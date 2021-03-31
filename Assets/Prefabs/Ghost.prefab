@@ -247,10 +247,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9449e2e8453b7bb4cb09fc19e28384e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _detectRange: 10
   _pathUpdateSec: 0.1
   _trigger: {fileID: 7840001965375740703}
-  _damage: 5
-  _recoilSpeed: 40
+  _damage: 10
+  _recoilSpeed: 32
+  _positions: 4
 --- !u!54 &7840001963899714935
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -499,7 +501,7 @@ MonoBehaviour:
   _activationLayers:
     serializedVersion: 2
     m_Bits: 512
-  _singleUse: 1
+  _singleUse: 0
 --- !u!54 &7840001965375740701
 Rigidbody:
   m_ObjectHideFlags: 0

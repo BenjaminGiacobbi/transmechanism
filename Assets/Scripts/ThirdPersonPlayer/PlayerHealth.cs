@@ -31,8 +31,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable<int>, IKillable
         }
     }
 
-    
-
     public void Damage(int damageTaken)
     {
         Debug.Log("Damage");
@@ -46,11 +44,18 @@ public class PlayerHealth : MonoBehaviour, IDamageable<int>, IKillable
 
     public void Kill()
     {
-    
+        //kill routine and feedback, re-add death animation behaviour in other scripts
+        Died?.Invoke();
+        ResetHP();
     }
 
     // Start is called before the first frame update
     void Start()
+    {
+        ResetHP();
+    }
+
+    void ResetHP()
     {
         _hp = _maxHp;
     }

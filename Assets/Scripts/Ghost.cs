@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
 
-public class Ghost : MonoBehaviour
+public class Ghost : MonoBehaviour, IKillable
 {
     [SerializeField] float _detectRange = 10f;
     public float DetectRange
@@ -66,7 +66,7 @@ public class Ghost : MonoBehaviour
         {
             if (possessable.Possess(this))
             {
-                ResetGhost(true);
+                Kill();
                 ActiveGhost(false);
                 // TODO this is an easy bug where the ghost won't be able to find the player if they're in its radius upon return to home
             }  
@@ -78,9 +78,10 @@ public class Ghost : MonoBehaviour
         {
             Vector3 origin = new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y + 1, other.gameObject.transform.position.z);
             Vector3 direction = origin - transform.position;
+            Debug.DrawRay(origin, direction, Color.red, 5f);
             if (Physics.Raycast(transform.position, direction, out RaycastHit hit, Mathf.Infinity))
             {
-                // recoil.ApplyRecoil(hit.point, _recoilSpeed);
+                recoil.ApplyRecoil(-hit.normal, _recoilSpeed);
             }
         }
 
@@ -88,7 +89,7 @@ public class Ghost : MonoBehaviour
         {
             damageable.Damage(_damage);
             transform.position = _startPos;
-            ResetGhost(true);
+            Kill();
         }
     }
 
@@ -143,7 +144,7 @@ public class Ghost : MonoBehaviour
                         new Vector2(transform.position.x, transform.position.z), new Vector2(_target.position.x, _target.position.z));
                     if (distance > DetectRange )//|| Mathf.Abs(_target.transform.position.y - transform.position.y) > 3)
                     {
-                        ResetGhost(false);
+                        ResetGhost();
                     }
                     else
                     {
@@ -161,19 +162,8 @@ public class Ghost : MonoBehaviour
         }
     }
 
-    public void ResetGhost(bool kill = false)
+    public void ResetGhost()
     {
-        if(kill)
-        {
-            
-            
-            if(_behaviour != null)
-            {
-                StopCoroutine(_behaviour);
-                _behaviour = null;
-            }
-            _behaviour = StartCoroutine(DieRoutine());
-        }
         _agent.SetDestination(_startPos);
         _target = null;
     }
@@ -195,11 +185,24 @@ public class Ghost : MonoBehaviour
 
     IEnumerator DieRoutine()
     {
+        _target = null;
         _agent.enabled = false;
         transform.position = new Vector3(2000, 2000, 2000);
         yield return new WaitForSeconds(2.5f);
-        _agent.enabled = true;
         transform.position = _startPos;
+        _agent.enabled = true;
+        ResetGhost();
+    }
+
+    public void Kill()
+    {
+        if (_behaviour != null)
+        {
+            StopCoroutine(_behaviour);
+            _behaviour = null;
+        }
+        _agent.SetDestination(_startPos);
+        _behaviour = StartCoroutine(DieRoutine());
     }
 
     /*
