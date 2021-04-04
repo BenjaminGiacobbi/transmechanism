@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class Ghost : MonoBehaviour, IKillable
 {
+    [SerializeField] ParticleBase _possessParticles = null;
     [SerializeField] float _detectRange = 10f;
     public float DetectRange
     { get { return _detectRange; } set { _detectRange = value; } }
@@ -68,6 +69,7 @@ public class Ghost : MonoBehaviour, IKillable
             {
                 Kill();
                 ActiveGhost(false);
+                
                 // TODO this is an easy bug where the ghost won't be able to find the player if they're in its radius upon return to home
             }  
             else
@@ -88,8 +90,8 @@ public class Ghost : MonoBehaviour, IKillable
         if (damageable != null)
         {
             damageable.Damage(_damage);
-            transform.position = _startPos;
             Kill();
+            
         }
     }
 
@@ -190,12 +192,20 @@ public class Ghost : MonoBehaviour, IKillable
         transform.position = new Vector3(2000, 2000, 2000);
         yield return new WaitForSeconds(2.5f);
         transform.position = _startPos;
+        _possessParticles.transform.parent = transform;
+        _possessParticles.transform.position = transform.position;
         _agent.enabled = true;
         ResetGhost();
     }
 
     public void Kill()
     {
+        if (_possessParticles != null)
+        {
+            _possessParticles.transform.parent = null;
+            _possessParticles.PlayComponents();
+        }
+
         if (_behaviour != null)
         {
             StopCoroutine(_behaviour);

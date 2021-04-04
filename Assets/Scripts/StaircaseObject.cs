@@ -10,11 +10,13 @@ public class StaircaseObject : LevelObject
 
     public override void Activate()
     {
+        base.Activate();
         _storedRotation = transform.rotation.eulerAngles.z + _zRotation;
     }
 
     public override void Deactivate()
     {
+        base.Deactivate();
         _storedRotation = transform.rotation.eulerAngles.z - _zRotation;
     }
 

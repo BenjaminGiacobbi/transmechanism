@@ -14,12 +14,14 @@ public class MovingPlatform : LevelObject
 
     public override void Activate()
     {
+        base.Activate();
         if (_timerRoutine == null)
             _timerRoutine = StartCoroutine(TimerRoutine());
     }
 
     public override void Deactivate()
     {
+        base.Deactivate();
         if (_timerRoutine != null)
         {
             StopCoroutine(_timerRoutine);

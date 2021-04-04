@@ -29,8 +29,11 @@ public static class AudioHelper
     {
         // create
         GameObject audioObject = new GameObject("Audio3D");
-        audioObject.transform.parent = parent;
-        audioObject.transform.position = parent.transform.position;
+        if(parent != null)
+        {
+            audioObject.transform.parent = parent;
+            audioObject.transform.position = parent.transform.position;
+        }
 
         AudioSource audioSource
             = audioObject.AddComponent<AudioSource>();
@@ -39,8 +42,8 @@ public static class AudioHelper
         audioSource.clip = clip;
         audioSource.volume = volume;
         audioSource.spatialBlend = 1;
-        audioSource.rolloffMode = AudioRolloffMode.Linear;
-        audioSource.maxDistance = 100f;
+        audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
+        audioSource.maxDistance = 5f;
 
         audioSource.Play();
         Object.Destroy(audioObject, length > 0 ? length : clip.length);

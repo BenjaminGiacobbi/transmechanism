@@ -14,11 +14,13 @@ public class Door : LevelObject
 
     public override void Activate()
     {
+        base.Activate();
         _targetPos = _activePos;
     }
 
     public override void Deactivate()
     {
+        base.Deactivate();
         _targetPos = _inactivePos;
     }
 

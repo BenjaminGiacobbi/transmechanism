@@ -44,11 +44,16 @@ public class Projectile : MonoBehaviour
             damageable.Damage(_damage);
         }
 
+        
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground") || other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            //TODO object pooling
+            GameObject newObj = _pooler.SpawnObject("ProjectileImpact", null, transform.position, Quaternion.identity);
+            newObj.GetComponent<AudioPart3D>().Init(_pooler, 2f, "ProjectileImpact");
             ReturnPool();
         }
+
+        
+            
     }
 
     void ReturnPool()

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5778034667557788445}
   - component: {fileID: 2598888354297894797}
   - component: {fileID: 7984324944633588293}
-  m_Layer: 8
+  m_Layer: 13
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7424930620238128087}
   - component: {fileID: 1845032740739529904}
-  m_Layer: 8
+  m_Layer: 13
   m_Name: LightFence
   m_TagString: Untagged
   m_Icon: {fileID: 0}

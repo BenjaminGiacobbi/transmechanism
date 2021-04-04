@@ -11,13 +11,13 @@ NavMeshProjectSettings:
     cost: 1
   - name: Jump
     cost: 2
-  - name: FullArea
-    cost: 1
-  - name: New
-    cost: 1
   - name: 
     cost: 1
   - name: 
+    cost: 1
+  - name: 
+    cost: 1
+  - name: Full
     cost: 1
   - name: 
     cost: 1

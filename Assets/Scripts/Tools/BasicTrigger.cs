@@ -20,11 +20,9 @@ public class BasicTrigger : MonoBehaviour
     {
         if (_activationLayers == (_activationLayers | (1 << other.gameObject.layer)))
         {
-            Debug.Log("activated");
             Activated?.Invoke(other);
             if (_singleUse)
             {
-                Debug.Log("Disabling");
                 enabled = false;
             }
         }

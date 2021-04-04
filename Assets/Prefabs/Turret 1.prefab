@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8b36fc9a2d2dc743aae5fb4292569ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gunSpin: {fileID: 6269990220621030470}
   _targetRadius: 10
   _targetMasks:
     serializedVersion: 2
@@ -120,6 +121,7 @@ MonoBehaviour:
   _firePosition: {fileID: 2333994415657802969}
   _possessed: 0
   _pooler: {fileID: 0}
+  _dischargeParticle: {fileID: 5709845065398381387}
 --- !u!1 &732914766466660974
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,6 +925,7 @@ Transform:
   m_Children:
   - {fileID: 3518507296452790275}
   - {fileID: 4541759005469398946}
+  - {fileID: 5709845065398381391}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3595,3 +3598,90 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1001 &1774417293778951236
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2333994415852325098}
+    m_Modifications:
+    - target: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314766811025340174, guid: cc9796d018c9561488cb26e842cd22c5,
+        type: 3}
+      propertyPath: m_Name
+      value: MuzzleFlash
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cc9796d018c9561488cb26e842cd22c5, type: 3}
+--- !u!4 &5709845065398381391 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6314766811025340171, guid: cc9796d018c9561488cb26e842cd22c5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1774417293778951236}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5709845065398381387 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6314766811025340175, guid: cc9796d018c9561488cb26e842cd22c5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1774417293778951236}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7d409347f8328b458d3b22561291e6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

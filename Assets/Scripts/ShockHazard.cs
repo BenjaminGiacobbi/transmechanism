@@ -10,6 +10,7 @@ public class ShockHazard : LevelObject
 
     public override void Activate()
     {
+        base.Activate();
         foreach (GameObject obj in _hazardObjects)
         {
             Damage damage = obj.GetComponent<Damage>();
@@ -26,7 +27,8 @@ public class ShockHazard : LevelObject
 
     public override void Deactivate()
     {
-        foreach(GameObject obj in _hazardObjects)
+        base.Deactivate();
+        foreach (GameObject obj in _hazardObjects)
         {
             Damage damage = obj.GetComponent<Damage>();
             if (damage != null)

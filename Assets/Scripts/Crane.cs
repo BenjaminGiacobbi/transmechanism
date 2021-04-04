@@ -10,6 +10,7 @@ public class Crane : LevelObject
     [SerializeField] float _cycleTime = 3f;
     [SerializeField] float _pauseTime = 0.5f;
     [SerializeField] float _rotRange = 120f;
+    [SerializeField] AudioSource _moveAudio = null;
     private float _timer = 0;
     private float _storedTime = 0;
     private float _rotMin = 0;
@@ -53,8 +54,10 @@ public class Crane : LevelObject
                 yield return null;
             }
 
-            yield return new WaitForSeconds(_pauseTime);
             SpawnScrap();
+            yield return new WaitForSeconds(_pauseTime);
+            if (_moveAudio != null)
+                _moveAudio.Play();
             // spawn behaviour
 
             while (_timer > -_cycleTime)
@@ -102,6 +105,7 @@ public class Crane : LevelObject
     public override void Activate()
     {
         Deactivate();
+        base.Activate();
         _rotateRoutine = StartCoroutine(TimerRoutine());
 
     }
@@ -113,5 +117,6 @@ public class Crane : LevelObject
             StopCoroutine(_rotateRoutine);
             _rotateRoutine = null;
         }
+        base.Deactivate();
     }
 }

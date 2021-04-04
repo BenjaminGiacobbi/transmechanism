@@ -7,18 +7,18 @@ using UnityEngine;
 public class PlayerCharacterAnimator : MonoBehaviour
 {
     [Header("Running/Sprinting Feedback")]
-    [SerializeField] AudioClip _footstepSound = null;
+    [SerializeField] AudioClip[] _footstepSounds = null;
     [SerializeField] ParticleSystem _movementParticles = null;
     [SerializeField] float _footstepTime = 0.3f;
     [SerializeField] float _sprintStepModifier = 2;
 
     [Header("Jumping/Landing Feedback")]
-    [SerializeField] AudioClip _jumpSound = null;
     [SerializeField] AudioClip _landSound = null;
     [SerializeField] ParticleSystem _jumpParticles = null;
     [SerializeField] ParticleSystem _trailParticles = null;
 
     [Header("Damage/Recoil Feedback")]
+    [SerializeField] ParticleBase _damageParticle = null;
     [SerializeField] SkinnedMeshRenderer _bodyRenderer = null;
     [SerializeField] Material _damageMaterial = null;
     [SerializeField] float _flashTime = 1f;
@@ -43,15 +43,20 @@ public class PlayerCharacterAnimator : MonoBehaviour
     PlayerController _movementScript = null;
 
     Coroutine _damageRoutine = null;
-
-
     private Coroutine _footstepRoutine = null;
     private bool _stepRoutineRunning = false;
+
+    int _lastIdx = 0;
     
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _movementScript = GetComponent<PlayerController>(); // some workflows might have the animator as a child object, so 
+        Debug.Log(_footstepSounds.Length);
+        foreach(AudioClip sound in _footstepSounds)
+        {
+            Debug.Log(sound.name);
+        }
     }
 
     #region subscriptions
@@ -59,7 +64,6 @@ public class PlayerCharacterAnimator : MonoBehaviour
     {
         _movementScript.Idle += OnIdle;
         _movementScript.StartRunning += OnStartRunning;
-        _movementScript.StartJump += OnStartJump;
         _movementScript.StartFall += OnStartFalling;
         _movementScript.Land += OnLand;
         _movementScript.StartSprint += OnSprint;
@@ -71,7 +75,6 @@ public class PlayerCharacterAnimator : MonoBehaviour
     {
         _movementScript.Idle -= OnIdle;
         _movementScript.StartRunning -= OnStartRunning;
-        _movementScript.StartJump -= OnStartJump;
         _movementScript.StartFall -= OnStartFalling;
         _movementScript.Land -= OnLand;
         _movementScript.StartSprint -= OnSprint;
@@ -89,118 +92,94 @@ public class PlayerCharacterAnimator : MonoBehaviour
 
     private void OnIdle()
     {
-        //Debug.Log("Idle");
-        // ClearFeedback();
+        ClearFeedback();
         _animator.CrossFadeInFixedTime(IdleState, .2f);
     }
 
 
     private void OnStartRunning()
     {
-        //Debug.Log("Run");
         _animator.CrossFadeInFixedTime(RunState, .2f);
 
-        // ClearFeedback();
-        // /_footstepRoutine = StartCoroutine(StepRoutine(_footstepTime));
+        ClearFeedback();
+        _footstepRoutine = StartCoroutine(StepRoutine(_footstepTime));
 
     }
 
 
     private void OnSprint()
     {
-        //Debug.Log("Sprint");
         _animator.CrossFadeInFixedTime(SprintState, .2f);
 
-        // /ClearFeedback();
-        // _footstepRoutine = StartCoroutine(StepRoutine(_sprintStepTime));
+        ClearFeedback();
+        _footstepRoutine = StartCoroutine(StepRoutine(_sprintStepTime));
     }
-
-
-    private void OnStartJump()
-    {
-        // ClearFeedback();
-
-        //Debug.Log("Jump");
-        _animator.Play(JumpState);
-        
-        /*_jumpParticles.transform.localEulerAngles = new Vector3
-            (0, _jumpParticles.transform.localEulerAngles.y, _jumpParticles.transform.localEulerAngles.z);
-        _jumpParticles.Play();
-        _trailParticles.Play();
-        // AudioHelper.PlayClip2D(_jumpSound, 0.45f);
-        */
-    }
-
 
     private void OnLand()
     {
-        //Debug.Log("Land");
         _animator.Play(LandState);
-
-        /*
-        _jumpParticles.transform.localEulerAngles = new Vector3
-            (180, _jumpParticles.transform.localEulerAngles.y, _jumpParticles.transform.localEulerAngles.z);
         _jumpParticles.Play();
         _trailParticles.Stop();
-        // AudioHelper.PlayClip2D(_landSound, 0.35f);
-        */
+        AudioHelper.PlayClip2D(_landSound, 0.35f);
     }
 
 
     private void OnStartFalling()
     {
-        //Debug.Log("Fall");
         _animator.CrossFadeInFixedTime(FallState, .2f);
     }
 
     private void OnRecoil()
     {
-        //Debug.Log("Recoil");
         _animator.Play(RecoilState);
-        /*ClearFeedback();
+        ClearFeedback();
         _trailParticles.Play();
 
         if (_damageRoutine == null)
         {
             _damageRoutine = StartCoroutine(FlashRoutine());
+            if (_damageParticle != null)
+                _damageParticle.PlayComponents();
             if (_damageSound != null)
-            {
-
-            }
-                // AudioHelper.PlayClip2D(_damageSound, 0.75f);
+            AudioHelper.PlayClip2D(_damageSound, 0.75f);
         }
-           */ 
     }
 
 
     private void OnDeath()
     {
-        //Debug.Log("Death");
         _animator.CrossFadeInFixedTime(DeathState, .2f);
         if (_deathSound != null)
-            // AudioHelper.PlayClip2D(_deathSound, 0.5f);
+            AudioHelper.PlayClip2D(_deathSound, 0.5f);
         ClearFeedback();
     }
 
 
     private void ClearFeedback()
     {
-        /*
         if (_footstepRoutine != null)
             StopCoroutine(_footstepRoutine);
         _trailParticles.Stop();
-        */
     }
 
 
     IEnumerator StepRoutine(float stepDelay)
     {
-        while(true)
+        _lastIdx = 0;
+        while (true)
         {
             yield return new WaitForSeconds(stepDelay);
 
             _movementParticles.Play();
-            // AudioHelper.PlayClip2D(_footstepSound, 0.4f);
+            int rand = 0;
+            do
+            {
+                rand = Random.Range(0, _footstepSounds.Length);
+            }
+            while (rand == _lastIdx);
+            AudioHelper.PlayClip2D(_footstepSounds[rand], 0.01f);
+            _lastIdx = rand;
+            
         }
     }
 

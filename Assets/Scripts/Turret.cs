@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour, IPossessable
 {
+    [SerializeField] GameObject _gunSpin = null;
     [SerializeField] float _targetRadius = 10f;
+    [SerializeField] float _rotateSpeed = 2f;
     [SerializeField] LayerMask _targetMasks;
     [SerializeField] GameObject _projectile = null;
     [SerializeField] Transform _firePosition = null;
     [SerializeField] bool _possessed = false;
     [SerializeField] ObjectPooler _pooler = null;
+    [SerializeField] ParticleBase _dischargeParticle = null;
     public bool Possessed
     { get { return _possessed; } private set { _possessed = value; } }
 
@@ -28,6 +31,14 @@ public class Turret : MonoBehaviour, IPossessable
         return false;
     }
 
+    private void Start()
+    {
+        if(_dischargeParticle != null)
+        {
+            _dischargeParticle.transform.position = _firePosition.position;
+            _dischargeParticle.transform.rotation = _firePosition.rotation;
+        }
+    }
 
     // no unpossess behaviour currently because it's only used once with a straight use case
     public bool Unpossess()
@@ -57,11 +68,15 @@ public class Turret : MonoBehaviour, IPossessable
             newProjectile.GetComponent<Projectile>().Init(_pooler);
             _firedOnLast = true;
             _timer += 0.1f;
+            if (_dischargeParticle != null)
+                _dischargeParticle.PlayComponents();
         }
         else
         {
             _firedOnLast = false;
         }
+        _gunSpin.transform.Rotate(
+            new Vector3(_gunSpin.transform.localEulerAngles.x, _gunSpin.transform.localEulerAngles.y, _gunSpin.transform.localEulerAngles.z+1));
     }
 
     private void TargetObject()
@@ -76,7 +91,13 @@ public class Turret : MonoBehaviour, IPossessable
                     _target = null;
                     return;
                 }
-                transform.LookAt(new Vector3(_target.position.x, transform.position.y, _target.position.z));
+
+                // gain target bearing and rotate toards
+                Vector3 direction = new Vector3
+                    (_target.position.x - transform.position.x, transform.position.y, _target.position.z - transform.position.z);
+                float step = _rotateSpeed * Time.deltaTime;
+                Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, step, 0.0f);
+                transform.rotation = Quaternion.LookRotation(newDirection);
             }
             else
             {
@@ -88,7 +109,6 @@ public class Turret : MonoBehaviour, IPossessable
                     if (colliderSearch.Length > 0)
                     {
                         _target = colliderSearch[0].gameObject.transform;
-                        Debug.Log(_target);
                     }
                 }
             }
